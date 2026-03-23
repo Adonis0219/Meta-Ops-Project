@@ -15,6 +15,9 @@ public class InputManager : MonoBehaviour
         HandleInput();
     }
 
+    /// <summary>
+    /// 마우스 입력을 처리하여 플레이어 컨트롤러에 전달하는 메서드
+    /// </summary>
     void HandleInput()
     {
         if (Input.GetMouseButtonDown(0))
