@@ -25,6 +25,18 @@ public class StackSystem : MonoBehaviour
 
         UpdateStackPositions();
     }
+    
+    public Transform PopItem()
+    {
+        if (stackItems.Count == 0) return null;
+        
+        Transform topItem = stackItems[stackItems.Count - 1];
+        stackItems.RemoveAt(stackItems.Count - 1);
+
+        UpdateStackPositions();
+
+        return topItem;
+    }
 
     /// <summary>
     /// 현재 순서와 간격을 토대로 스택에 있는 모든 오브젝트의 위치를 수정합니다

@@ -25,4 +25,11 @@ public class Inventory : MonoBehaviour
 
         Debug.Log($"현재 수집한 아이템 수: {Count}");
     }
+
+    public void Remove(int _amount)
+    {
+        Count -= _amount;
+
+        Debug.Log($"현재 수집한 아이템 수: {Count}");
+    }
 }

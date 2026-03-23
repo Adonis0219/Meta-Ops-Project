@@ -39,7 +39,6 @@ public class PlayerCollector : MonoBehaviour
                 return;
             }
 
-
             // 인벤에 획득 알리기
             playerInven.Add(item.scoreValue);
             // 스택 시스템에 추가
