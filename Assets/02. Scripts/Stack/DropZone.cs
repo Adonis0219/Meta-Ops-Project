@@ -7,6 +7,7 @@ public class DropZone : MonoBehaviour
 {
     public List<Transform> dropPoints = new List<Transform>(); // 드롭 지점 리스트
     public float dropZoneSpacing = 0.3f; // 드롭 지점 간격
+    public float firstSpacing = .1f; // 드롭존과 첫 번째 아이템 간격
 
     Coroutine deliveryCoru; // 아이템 제거 코루틴 참조
 
@@ -60,7 +61,7 @@ public class DropZone : MonoBehaviour
             for (int j = 0; j < dropPoints[i].childCount; j++)
             {
                 Transform item = dropPoints[i].GetChild(j);
-                Vector3 targetPosition = new Vector3(0, j * dropZoneSpacing, 0);
+                Vector3 targetPosition = new Vector3(0, j * dropZoneSpacing + firstSpacing, 0);
                 item.localPosition = targetPosition;
             }
         }

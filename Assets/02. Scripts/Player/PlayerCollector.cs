@@ -33,6 +33,9 @@ public class PlayerCollector : MonoBehaviour
             if (col != null)
                 col.enabled = false;
 
+            // 아이템 이동 알리기
+            item.NotifyMoved();
+
             if (playerInven.IsFull)
             {
                 item.gameObject.SetActive(false); // 인벤이 가득 찼을 때 아이템 비활성화
@@ -41,6 +44,8 @@ public class PlayerCollector : MonoBehaviour
 
             // 아이템 획득 효과
             ItemEffect effect = item.GetComponent<ItemEffect>();
+
+            // 이동 효과
             StartCoroutine(effect.PlayCollectEffect(stackSystem.stackRoot));
 
             // 인벤에 획득 알리기

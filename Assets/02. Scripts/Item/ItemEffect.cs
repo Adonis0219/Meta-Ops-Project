@@ -6,7 +6,7 @@ public class ItemEffect : MonoBehaviour
 {
     public IEnumerator PlayCollectEffect(Transform _target)
     {
-        float duration = 0.2f;
+        float duration = .2f;
         float time = 0;
 
         Vector3 startPos = transform.position;
