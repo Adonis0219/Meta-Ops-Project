@@ -1,49 +1,80 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StackSystem : MonoBehaviour
 {
-    public Transform stackRoot;
     public float stackSpacing = 1.0f;
+    public GameObject handObj;
 
-    private List<Transform> stackItems = new List<Transform>();
+    private Dictionary<PoolObejectType, List<Transform>> itemDict = new Dictionary<PoolObejectType, List<Transform>>();
 
-    public void AddToStack(Transform item)
+    public Transform[] roots;
+
+    private void Awake()
     {
-        item.SetParent(stackRoot, false);
-
-        item.localPosition = Vector3.zero; // 부모의 위치에 맞춰 초기 위치 설정
-        item.localRotation = Quaternion.identity; // 부모의 회전에 맞춰 초기 회전 설정
-        item.localScale = new Vector3(1, .5f, 1); // 아이템의 크기를 조정 (예시로 높이를 절반으로 줄임)
-
-        stackItems.Add(item);
-
-        UpdateStackPositions();
+        Init();
     }
-    
+
+    private void Update()
+    {
+        handObj.SetActive(roots[(int)PoolObejectType.Product].childCount != 0);
+    }
+
+    void Init()
+    {
+        for (int i = 0; i < (int)PoolObejectType.Length; i++)
+            itemDict[(PoolObejectType)i] = new List<Transform>();
+    }
+
+    public void AddToStack(Item item)
+    {
+        Transform itemTrans = item.transform;
+
+        itemTrans.SetParent(roots[(int)item.poolType], false);
+
+        itemTrans.localPosition = Vector3.zero; // 부모의 위치에 맞춰 초기 위치 설정
+        itemTrans.localRotation = Quaternion.
+            Euler(item.obtainAngle.x, item.obtainAngle.y, item.obtainAngle.z);  // 아이템의 획득 회전에 맞게 수정
+        itemTrans.localScale = item.obtainScale; // 아이템의 크기를 수정
+
+        itemDict[item.poolType].Add(itemTrans); 
+        
+        UpdateAllPos();
+    }
+
     /// <summary>
     /// Removes and returns the top item from the stack.
     /// </summary>
-    /// <returns>가장 상단 오브젝트의 <see cref="Transform"/>, 또는 스택이 비어있다면 <see langword="null"/> 반환.</returns>
-    public Transform PopItem()
+    /// <param name="type">꺼내올 오브젝트의 <see cref="PoolObejectType"/></param>
+    /// <returns>가장 상단 오브젝트의 <see cref="Transform"/>, 또는 스택이 비어있다면 <see langword="null"/> 반환</returns>
+    public Transform PopItem(PoolObejectType type)
     {
-        if (stackItems.Count == 0) return null;
-        
-        Transform topItem = stackItems[stackItems.Count - 1];
-        stackItems.RemoveAt(stackItems.Count - 1);
+        var list = itemDict[type];
 
-        UpdateStackPositions();
+        if (list.Count == 0) return null;
 
-        return topItem;
+        Transform popItem = list[itemDict[type].Count - 1];
+        list.RemoveAt(itemDict[type].Count - 1);
+
+        UpdateAllPos();
+
+        return popItem;
     }
 
-    void UpdateStackPositions()
+    void UpdateAllPos()
     {
-        for (int i = 0; i < stackItems.Count; i++)
+        foreach (var item in itemDict)
         {
-            Vector3 targetPosition = new Vector3(0, i * stackSpacing, 0);
-            stackItems[i].localPosition = targetPosition;
+            PoolObejectType type = item.Key;
+            var list = item.Value;
+
+            for (int j = 0; j < list.Count; j++)
+            {
+                Vector3 targetPos = new Vector3(0, j * stackSpacing, 0);
+                list[j].localPosition = targetPos;
+            }
         }
     }
 }

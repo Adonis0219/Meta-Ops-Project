@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour
 {
     Dictionary<PoolObejectType, ItemSlot> items = new Dictionary<PoolObejectType, ItemSlot>();
 
-    int[] maxCount = { 5, 10, 10 };
+    int[] maxCount = { 5, int.MaxValue, int.MaxValue };
 
     private void Awake()
     {
@@ -41,20 +41,13 @@ public class Inventory : MonoBehaviour
     private void DictInitSet()
     {
         for (int i = 0; i < (int)PoolObejectType.Length; i++)
-        {
             items[(PoolObejectType)i] = new ItemSlot(maxCount[i]);
-        }
     }
 
-    public void AddItem(PoolObejectType _type, int _amount)
-    {
-        GetOrCreateSlot(_type).Add(_amount);
-    }
+    public void AddItem(PoolObejectType _type, int _amount) => GetOrCreateSlot(_type).Add(_amount);
 
-    public void RemoveItem(PoolObejectType _type, int _amount)
-    {
-        GetOrCreateSlot(_type).Remove(_amount);
-    }
+    public void RemoveItem(PoolObejectType _type, int _amount) => GetOrCreateSlot(_type).Remove(_amount);
+    
 
     /// <summary>
     /// Dictionary를 private으로 설정하기 위한 Getter

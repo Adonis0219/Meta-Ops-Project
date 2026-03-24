@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerCollector : MonoBehaviour
 {
@@ -10,7 +11,10 @@ public class PlayerCollector : MonoBehaviour
     [SerializeField] private float collectCooldown = 0.5f; // 채광 쿨다운 시간
     private float lastCollectTime = -Mathf.Infinity; // 마지막 수집 시간
 
+    Coroutine proCoru;
+
     private const string COLLECTIBLE_TAG = "Collectible";
+    private const string PRODUCTZONE_TAG = "ProductZone";
 
     private void Awake()
     {
@@ -25,52 +29,93 @@ public class PlayerCollector : MonoBehaviour
     {
         if (other.CompareTag(COLLECTIBLE_TAG))
         {
-            if (Time.time - lastCollectTime < collectCooldown)
-                return; // 쿨다운 중이면 수집하지 않음
-
-            // 마지막 수집 시간 업데이트
-            lastCollectTime = Time.time;
-
-            Item item = other.GetComponent<Item>();
-
-            if (item == null || item.isObtained) return;
-
-            // 아이템 획득 처리
-            item.isObtained = true;
-            // 물리적 안정성을 위해 collider 비활성화
-            Collider col = item.GetComponent<Collider>();
-            if (col != null)
-                col.enabled = false;
-
-            // 아이템 이동 알리기
-            item.NotifyMoved();
-
-            if (playerInven.GetSlot(item.poolType).IsFull)
-            {
-                item.gameObject.SetActive(false); // 인벤이 가득 찼을 때 아이템 비활성화
-                return;
-            }
-
-            // 아이템 획득 효과
-            ItemEffect effect = item.GetComponent<ItemEffect>();
-
-            // 이동 효과
-            StartCoroutine(effect.PlayCollectEffect(stackSystem.stackRoot));
-
-            // 인벤에 획득 알리기
-            playerInven.AddItem(item.poolType, item.scoreValue);
-            // 스택 시스템에 추가
-            stackSystem.AddToStack(item.transform);
+            OreCollect(other);
+        }
+        else if (other.CompareTag(PRODUCTZONE_TAG))
+        {
+            proCoru = StartCoroutine(ProductCollect(other));
         }
     }
 
     private void OreCollect(Collider other)
     {
+        if (Time.time - lastCollectTime < collectCooldown)
+            return; // 쿨다운 중이면 수집하지 않음
 
+        // 마지막 수집 시간 업데이트
+        lastCollectTime = Time.time;
+
+        Item item = other.GetComponent<Item>();
+
+        if (item == null || item.isObtained) return;
+
+        // 아이템 획득 처리
+        MarkAsCollected(item);
+
+        // 아이템 이동 알리기
+        item.NotifyMoved();
+
+        if (playerInven.GetSlot(item.poolType).IsFull)
+        {
+            item.gameObject.SetActive(false); // 인벤이 가득 찼을 때 아이템 비활성화
+            return;
+        }
+
+        // 아이템 획득 효과
+        ObtainEffect(item);
     }
 
-    public void ProductCollect()
+    public IEnumerator ProductCollect(Collider other)
     {
+        ProductZone pZone = other.GetComponent<ProductZone>();
 
+        while (pZone.ProdCount > 0)
+        {
+            // 가장 위 아이템 가져오기
+            Item item = pZone.Products[pZone.ProdCount - 1].GetComponent<Item>();
+
+            if (item == null || item.isObtained) yield break;
+
+            // 아이템 지우기
+            pZone.Remove(item.gameObject);
+
+            // 아이템 획득 처리
+            MarkAsCollected(item);
+
+            // 아이템 획득 효과
+            ObtainEffect(item);
+
+            yield return new WaitForSeconds(.1f);
+        }
+
+        proCoru = null;
+    }
+
+    /// <summary>
+    /// 아이템 획득 처리
+    /// </summary>
+    void MarkAsCollected(Item item)
+    {
+        // 아이템 획득 처리
+        item.isObtained = true;
+
+        // 물리적 안정성 위해 Collider 제거
+        Collider col = item.GetComponent<Collider>();
+        if (col != null)
+            col.enabled = false;
+    }
+
+    void ObtainEffect(Item item)
+    {
+        // 아이템 획득 효과
+        ItemEffect effect = item.GetComponent<ItemEffect>();
+
+        // 이동 효과 시작
+        StartCoroutine(effect.PlayCollectEffect(stackSystem.roots[(int)item.poolType]));
+
+        // 인벤에 획득 알리기
+        playerInven.AddItem(item.poolType, item.scoreValue);
+        // 스택 시스템의 자기 자리에 추가
+        stackSystem.AddToStack(item);
     }
 }

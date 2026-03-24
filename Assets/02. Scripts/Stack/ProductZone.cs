@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ProductZone : MonoBehaviour
@@ -21,12 +22,16 @@ public class ProductZone : MonoBehaviour
 
     #endregion
 
+    List<GameObject> products = new List<GameObject>();
     Coroutine produceCoru = null; // 생산 코루틴 참조
+
+    public int ProdCount => products.Count;
+    public IReadOnlyList<GameObject> Products => products;
 
     private void Update()
     {
         // 원재료가 존재하면 → 생산 시작
-        if (dropZone.dropZoneCount != 0)
+        if (dropZone.DropZoneCount != 0)
         {
             if (produceCoru != null) return; // 이미 생산 중이면 중복 실행 방지
 
@@ -51,7 +56,7 @@ public class ProductZone : MonoBehaviour
             yield return new WaitForSeconds(productDelay); // 생산 간격 대기
 
             // 원재료가 없으면 생산 종료
-            if (dropZone.dropZoneCount <= 0) yield break;
+            if (dropZone.DropZoneCount <= 0) yield break;
 
             // 원재료 소비
             dropZone.RemoveOre();
@@ -63,10 +68,13 @@ public class ProductZone : MonoBehaviour
 
     void ProduceProduct()
     {
-        Transform temp = PoolManager.instance.GetPool(PoolObejectType.Product).transform;
+        GameObject product = PoolManager.instance.GetPool(PoolObejectType.Product);
+
+        // 제품 리스트에 추가
+        products.Add(product);
 
         // ProductZone의 자식으로 설정 (스택 구조)
-        temp.SetParent(transform);
+        product.transform.SetParent(transform);
 
         // 스택 위치 재정렬
         UpdateStackPositions();
@@ -82,5 +90,10 @@ public class ProductZone : MonoBehaviour
             Vector3 targetPosition = new Vector3(0, i * prodZoneSpacing + firstSpacing, 0);
             item.localPosition = targetPosition;
         }
+    }
+
+    public void Remove(GameObject item)
+    {
+        products.Remove(item);
     }
 }

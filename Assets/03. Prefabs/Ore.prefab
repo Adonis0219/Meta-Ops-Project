@@ -120,9 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca0a4306ab9e8140866d9c8c52f901a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oreType: 0
+  poolType: 0
+  parent: {fileID: 0}
   scoreValue: 1
   isObtained: 0
+  obtainScale: {x: 1, y: 0.5, z: 1}
 --- !u!114 &-8788685654482201909
 MonoBehaviour:
   m_ObjectHideFlags: 0

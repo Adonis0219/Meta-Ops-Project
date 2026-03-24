@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3537801595020454612}
   - component: {fileID: 7313522197728045436}
   - component: {fileID: 5513042271086296009}
+  - component: {fileID: -3153246609621542735}
   m_Layer: 0
   m_Name: Product
   m_TagString: Untagged
@@ -124,3 +125,17 @@ MonoBehaviour:
   parent: {fileID: 0}
   scoreValue: 1
   isObtained: 0
+  obtainScale: {x: 0.5, y: 0.5, z: 0.5}
+  obtainAngle: {x: 0, y: 0, z: 90}
+--- !u!114 &-3153246609621542735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234576264172099372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18d686dbb449f44f84b91f689274a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

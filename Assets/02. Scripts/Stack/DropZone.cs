@@ -16,7 +16,14 @@ public class DropZone : MonoBehaviour
     #endregion
 
     Coroutine deliveryCoru; // 아이템 제거 코루틴 참조
-    public int dropZoneCount = 0; // 드롭존에 쌓인 아이템 수
+    [SerializeField]
+    int dropZoneCount = 0; // 드롭존에 쌓인 아이템 수
+
+    public int DropZoneCount
+    {
+        get => dropZoneCount;
+        private set => dropZoneCount = value;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -40,6 +47,11 @@ public class DropZone : MonoBehaviour
             StopCoroutine(deliveryCoru);
              deliveryCoru = null; // 참조 초기화
         }
+    }
+
+    public void SetDropZoneCount(int amount)
+    {
+        dropZoneCount += amount;
     }
 
     public void StackInDropZone(Transform _item)

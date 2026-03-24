@@ -19,6 +19,9 @@ public class Item : PoolObject
 
     public bool isObtained = false; // 아이템이 획득되었는지 여부
 
+    public Vector3 obtainScale;
+    public Vector3 obtainAngle;
+
     #endregion
 
     private void OnDisable()

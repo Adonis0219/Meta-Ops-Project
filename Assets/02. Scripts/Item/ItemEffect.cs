@@ -11,7 +11,6 @@ public class ItemEffect : MonoBehaviour
 
         Vector3 startPos = transform.position;
         Vector3 startScale = transform.localScale;
-        Vector3 targetScale = new Vector3(1, .5f, 1);
 
         while (time < duration)
         {
@@ -22,8 +21,6 @@ public class ItemEffect : MonoBehaviour
             t *= t;
             // 부드러운 이동
             transform.position = Vector3.Lerp(startPos, _target.position, t);
-            // 부드러운 축소
-            transform.localScale = Vector3.Lerp(startScale, targetScale, t);
 
             yield return null;
         }
