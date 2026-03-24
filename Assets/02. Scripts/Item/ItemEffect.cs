@@ -22,7 +22,6 @@ public class ItemEffect : MonoBehaviour
             t *= t;
             // 부드러운 이동
             transform.position = Vector3.Lerp(startPos, _target.position, t);
-            
             // 부드러운 축소
             transform.localScale = Vector3.Lerp(startScale, targetScale, t);
 
@@ -30,6 +29,7 @@ public class ItemEffect : MonoBehaviour
         }
     }
 
+    #region 필요 시 사용
     public IEnumerator StackMoveEffect(Transform _item, Vector3 _targetLocPos)
     {
         float duration = 0.15f;
@@ -52,32 +52,5 @@ public class ItemEffect : MonoBehaviour
 
         _item.localPosition = _targetLocPos;
     }
-
-    public IEnumerator DeliveryEffect(Transform _item, Vector3 _target)
-    {
-        float duration = 0.2f;
-        float time = 0;
-
-        Vector3 startPos = _item.position;
-        Vector3 startScale = _item.localScale;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float t = time / duration;
-
-            // 부드러운 가속
-            t *= t;
-
-            // 이동
-            _item.position = Vector3.Lerp(startPos, _target, t);
-
-            // 작아지기
-            _item.localScale = Vector3.Lerp(startScale, Vector3.zero, t);
-
-            yield return null;
-        }
-
-        _item.gameObject.SetActive(false);
-    }
+    #endregion
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class DropZone : MonoBehaviour
@@ -63,5 +64,16 @@ public class DropZone : MonoBehaviour
                 item.localPosition = targetPosition;
             }
         }
+    }
+
+    public Transform SelectDropPoint()
+    {
+        for (int i = 0; i < dropPoints.Count; i++)
+        {
+            if (dropPoints[i].childCount < 10)
+                return dropPoints[i]; // 드롭 지점이 비어있으면 해당 인덱스 반환
+        }
+
+        return null; // 모든 드롭 지점이 가득 찼을 때 기본값으로 null 반환
     }
 }
