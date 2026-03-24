@@ -7,7 +7,7 @@ public class PlayerCollector : MonoBehaviour
     Inventory playerInven;
     StackSystem stackSystem;
 
-    [SerializeField] private float collectCooldown = 0.5f; // 수집 쿨다운 시간
+    [SerializeField] private float collectCooldown = 0.5f; // 채광 쿨다운 시간
     private float lastCollectTime = -Mathf.Infinity; // 마지막 수집 시간
 
     private const string COLLECTIBLE_TAG = "Collectible";
@@ -45,7 +45,7 @@ public class PlayerCollector : MonoBehaviour
             // 아이템 이동 알리기
             item.NotifyMoved();
 
-            if (playerInven.IsFull)
+            if (playerInven.GetSlot(item.poolType).IsFull)
             {
                 item.gameObject.SetActive(false); // 인벤이 가득 찼을 때 아이템 비활성화
                 return;
@@ -58,9 +58,19 @@ public class PlayerCollector : MonoBehaviour
             StartCoroutine(effect.PlayCollectEffect(stackSystem.stackRoot));
 
             // 인벤에 획득 알리기
-            playerInven.Add(item.scoreValue);
+            playerInven.AddItem(item.poolType, item.scoreValue);
             // 스택 시스템에 추가
             stackSystem.AddToStack(item.transform);
         }
+    }
+
+    private void OreCollect(Collider other)
+    {
+
+    }
+
+    public void ProductCollect()
+    {
+
     }
 }

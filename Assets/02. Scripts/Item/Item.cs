@@ -25,7 +25,7 @@ public class Item : PoolObject
     {
         // 아이템이 비활성화될 때 획득 상태 초기화
         isObtained = false;
-        transform.SetParent(parent); // 부모로 되돌리기
+
         // 풀로 되돌리기
         ReturnPool();
     }

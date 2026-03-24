@@ -5,7 +5,7 @@ using UnityEngine;
 public class PoolObject : MonoBehaviour
 {
     [SerializeField]
-    protected PoolObejectType poolType;
+    public PoolObejectType poolType;
 
     // 반환함수
     protected void ReturnPool()
