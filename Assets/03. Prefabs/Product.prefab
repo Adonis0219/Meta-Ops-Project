@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ca0a4306ab9e8140866d9c8c52f901a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolType: 1
   oreType: 1
   scoreValue: 1
   isObtained: 0

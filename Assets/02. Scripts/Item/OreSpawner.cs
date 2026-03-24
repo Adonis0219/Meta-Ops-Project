@@ -13,9 +13,6 @@ public class OreSpawner : MonoBehaviour
     [Header("# Respawn")]
     public float respawnDelay = 3f;
 
-    [Header("# Reference")]
-    public SimpleObjPool orePool;
-
     #endregion
 
     #region === Private Fields ===
@@ -54,16 +51,16 @@ public class OreSpawner : MonoBehaviour
     {
         if (oreGrid[_x, _y] != null) return;
 
-        GameObject ore  = orePool.GetPool();
+        GameObject ore = PoolManager.instance.GetPool(PoolObejectType.Ore);
         //ore.transform.SetParent(this.transform);
         ore.transform.position = GetWorldPos(_x, _y);
 
         Item item = ore.GetComponent<Item>();
-        item.Init(_x, _y);
+        item.Init(_x, _y, ore.transform.parent);
 
         item.OnMoved += HandleItemMoved;
 
-        oreGrid[_x, _y] = ore;  
+        oreGrid[_x, _y] = ore;
     }
 
     void HandleItemMoved(int _x, int _y)

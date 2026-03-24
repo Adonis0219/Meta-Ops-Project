@@ -16,6 +16,7 @@ public class DropZone : MonoBehaviour
     #endregion
 
     Coroutine deliveryCoru; // 아이템 제거 코루틴 참조
+    public int dropZoneCount = 0; // 드롭존에 쌓인 아이템 수
 
     private void OnTriggerEnter(Collider other)
     {
@@ -27,9 +28,7 @@ public class DropZone : MonoBehaviour
 
         if (playerStack == null || playerInven == null || delivery == null) return;
 
-        deliveryCoru = StartCoroutine(delivery.Deliver(playerStack, this, playerInven));
-
-        productZone.ProduceProduct(); // 제품 생산 시작          
+        deliveryCoru = StartCoroutine(delivery.Deliver(playerStack, this, playerInven));       
     }
 
     private void OnTriggerExit(Collider other)
@@ -83,5 +82,30 @@ public class DropZone : MonoBehaviour
         }
 
         return null; // 모든 드롭 지점이 가득 찼을 때 기본값으로 null 반환
+    }
+
+    public GameObject PopItem()
+    {
+        for (int i = 0; i < dropPoints.Count; i++)
+        {
+            if (dropPoints[i].childCount > 0)
+            {
+                // 맨 위 아이템 가져오기
+                Transform item = dropPoints[i].GetChild(dropPoints[i].childCount - 1);
+
+                item.SetParent(item.GetComponent<Item>().parent); // 아이템의 부모를 원부모로 설정하여 드롭존에서 제거
+
+                dropZoneCount--; // 드롭존에 아이템 개수 감소
+
+                return item.gameObject; // 아이템 반환
+            }
+        }
+
+        return null; // 모든 드롭 지점이 비어있을 때 기본값으로 null 반환
+    }
+
+    public void RemoveOre()
+    {
+        PopItem().SetActive(false); // 아이템 비활성화하여 제거 처리
     }
 }

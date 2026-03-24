@@ -24,6 +24,7 @@ public class DeliveryHandler : MonoBehaviour
             yield return DeliveryEffect(item, _drop, dropPoint);
 
             _inven.Remove(1); // 인벤토리에서 아이템 제거
+            _drop.dropZoneCount++; // 납품 구역에 아이템 개수 추가
 
             yield return new WaitForSeconds(deliveryTime); // 납품 시간 대기
         }
