@@ -7,6 +7,9 @@ public class PlayerCollector : MonoBehaviour
     Inventory playerInven;
     StackSystem stackSystem;
 
+    [SerializeField] private float collectCooldown = 0.5f; // 수집 쿨다운 시간
+    private float lastCollectTime = -Mathf.Infinity; // 마지막 수집 시간
+
     private const string COLLECTIBLE_TAG = "Collectible";
 
     private void Awake()
@@ -22,6 +25,12 @@ public class PlayerCollector : MonoBehaviour
     {
         if (other.CompareTag(COLLECTIBLE_TAG))
         {
+            if (Time.time - lastCollectTime < collectCooldown)
+                return; // 쿨다운 중이면 수집하지 않음
+
+            // 마지막 수집 시간 업데이트
+            lastCollectTime = Time.time;
+
             Item item = other.GetComponent<Item>();
 
             if (item == null || item.isObtained) return;

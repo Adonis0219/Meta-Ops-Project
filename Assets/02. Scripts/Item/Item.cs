@@ -7,8 +7,8 @@ using UnityEngine.SocialPlatforms.Impl;
 public enum OreType
 {
     Iron,
-    Gold,
-    Diamond
+    Product,
+    Money
 }
 
 public class Item : MonoBehaviour

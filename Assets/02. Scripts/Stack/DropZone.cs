@@ -5,15 +5,20 @@ using UnityEngine;
 
 public class DropZone : MonoBehaviour
 {
+    #region === Inspector ===
+
     public List<Transform> dropPoints = new List<Transform>(); // 드롭 지점 리스트
     public float dropZoneSpacing = 0.3f; // 드롭 지점 간격
     public float firstSpacing = .1f; // 드롭존과 첫 번째 아이템 간격
+
+    public ProductZone productZone; // 가공 제품이 쌓이는 드롭존
+
+    #endregion
 
     Coroutine deliveryCoru; // 아이템 제거 코루틴 참조
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (!other.CompareTag("Player")) return;
 
         var playerStack = other.GetComponent<StackSystem>();
@@ -23,6 +28,8 @@ public class DropZone : MonoBehaviour
         if (playerStack == null || playerInven == null || delivery == null) return;
 
         deliveryCoru = StartCoroutine(delivery.Deliver(playerStack, this, playerInven));
+
+        productZone.ProduceProduct(); // 제품 생산 시작          
     }
 
     private void OnTriggerExit(Collider other)

@@ -56,8 +56,7 @@ public class OreSpawner : MonoBehaviour
 
         GameObject ore  = orePool.GetPool();
         //ore.transform.SetParent(this.transform);
-        ore.transform.position = transform.position 
-            + new Vector3(_y + _x, 0, _y - _x);
+        ore.transform.position = GetWorldPos(_x, _y);
 
         Item item = ore.GetComponent<Item>();
         item.Init(_x, _y);
@@ -86,6 +85,14 @@ public class OreSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnDelay);
         Spawn(_x, _y);
+    }
+
+    Vector3 GetWorldPos(int _x, int _y)
+    {
+        Vector3 worldPos = transform.position 
+            + new Vector3(_y + _x, 0, _y - _x);
+
+        return worldPos;
     }
 }
 
