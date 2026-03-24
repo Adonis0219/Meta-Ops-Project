@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,6 @@ public class DropZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Debug.Log("Player entered the Drop Zone!");
 
         if (!other.CompareTag("Player")) return;
 
@@ -61,7 +60,6 @@ public class DropZone : MonoBehaviour
             {
                 Transform item = dropPoints[i].GetChild(j);
                 Vector3 targetPosition = new Vector3(0, j * dropZoneSpacing, 0);
-                // Debug.Log($"드롭존 {i}의 {j}번 아이템 위치: {targetPosition}");
                 item.localPosition = targetPosition;
             }
         }

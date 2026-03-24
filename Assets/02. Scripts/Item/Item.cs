@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
@@ -12,8 +12,8 @@ public enum OreType
 
 public class Item : MonoBehaviour
 {
-    public OreType oreType; // ¾ÆÀÌÅÛÀÇ ±¤¼® Á¾·ù
-    public int scoreValue = 1; // ¾ÆÀÌÅÛÀÌ Á¦°øÇÏ´Â Á¡¼ö °ª
+    public OreType oreType; // ì•„ì´í…œì˜ ê´‘ì„ ì¢…ë¥˜
+    public int scoreValue = 1; // ì•„ì´í…œì´ ì œê³µí•˜ëŠ” ì ìˆ˜ ê°’
 
-    public bool isObtained = false; // ¾ÆÀÌÅÛÀÌ È¹µæµÇ¾ú´ÂÁö ¿©ºÎ
+    public bool isObtained = false; // ì•„ì´í…œì´ íšë“ë˜ì—ˆëŠ”ì§€ ì—¬ë¶€
 }
