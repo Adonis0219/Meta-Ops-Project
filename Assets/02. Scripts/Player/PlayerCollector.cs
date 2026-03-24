@@ -39,6 +39,10 @@ public class PlayerCollector : MonoBehaviour
                 return;
             }
 
+            // 아이템 획득 효과
+            ItemEffect effect = item.GetComponent<ItemEffect>();
+            StartCoroutine(effect.PlayCollectEffect(stackSystem.stackRoot));
+
             // 인벤에 획득 알리기
             playerInven.Add(item.scoreValue);
             // 스택 시스템에 추가
