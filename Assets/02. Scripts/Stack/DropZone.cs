@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class DropZone : MonoBehaviour
 {
-    public List<Transform> dropPoints = new List<Transform>(); // µå·Ó ÁöÁ¡ ¸®½ºÆ®
-    public float dropZoneSpacing = 0.3f; // µå·Ó ÁöÁ¡ °£°İ
+    public List<Transform> dropPoints = new List<Transform>(); // ë“œë¡­ ì§€ì  ë¦¬ìŠ¤íŠ¸
+    public float dropZoneSpacing = 0.3f; // ë“œë¡­ ì§€ì  ê°„ê²©
 
-    Coroutine deliveryCoru; // ¾ÆÀÌÅÛ Á¦°Å ÄÚ·çÆ¾ ÂüÁ¶
-
-    //private void Awake()
-    //{
-    //    for (int i = 0; i < transform.childCount; i++)
-    //    {
-    //        dropPoints.Add(transform.GetChild(i));
-    //    }
-    //}
+    Coroutine deliveryCoru; // ì•„ì´í…œ ì œê±° ì½”ë£¨í‹´ ì°¸ì¡°
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player entered the Drop Zone!");
+        // Debug.Log("Player entered the Drop Zone!");
 
         if (!other.CompareTag("Player")) return;
 
@@ -39,7 +31,7 @@ public class DropZone : MonoBehaviour
         if (deliveryCoru != null)
         {
             StopCoroutine(deliveryCoru);
-             deliveryCoru = null; // ÂüÁ¶ ÃÊ±âÈ­
+             deliveryCoru = null; // ì°¸ì¡° ì´ˆê¸°í™”
         }
     }
 
@@ -54,7 +46,7 @@ public class DropZone : MonoBehaviour
                 _item.localRotation = Quaternion.identity;
                 _item.localScale = new Vector3(1, .5f, 1);
 
-                break; // ¾ÆÀÌÅÛÀÌ µå·ÓÁ¸¿¡ ½×¿´À¸¹Ç·Î ·çÇÁ Á¾·á
+                break; // ì•„ì´í…œì´ ë“œë¡­ì¡´ì— ìŒ“ì˜€ìœ¼ë¯€ë¡œ ë£¨í”„ ì¢…ë£Œ
             }
         }
 
@@ -69,7 +61,7 @@ public class DropZone : MonoBehaviour
             {
                 Transform item = dropPoints[i].GetChild(j);
                 Vector3 targetPosition = new Vector3(0, j * dropZoneSpacing, 0);
-                Debug.Log($"µå·ÓÁ¸ {i}ÀÇ {j}¹ø ¾ÆÀÌÅÛ À§Ä¡: {targetPosition}");
+                // Debug.Log($"ë“œë¡­ì¡´ {i}ì˜ {j}ë²ˆ ì•„ì´í…œ ìœ„ì¹˜: {targetPosition}");
                 item.localPosition = targetPosition;
             }
         }
