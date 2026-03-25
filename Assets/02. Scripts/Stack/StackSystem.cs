@@ -70,8 +70,6 @@ public class StackSystem : MonoBehaviour
             PoolObejectType type = item.Key;
             var list = item.Value;
 
-            Debug.Log($"{type} 타입 재배치 시작, listCount : {list.Count}");
-
             for (int j = 0; j < list.Count; j++)
             {
                 Vector3 targetPos = new Vector3(0, j * stackSpacing, 0);

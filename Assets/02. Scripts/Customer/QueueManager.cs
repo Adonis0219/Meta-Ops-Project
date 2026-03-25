@@ -24,9 +24,9 @@ public class QueueManager : MonoBehaviour
     {
         customer.OnArrived -= HandleCustomerArrived;
 
-        customers.Remove(customer);
-
         UpdateQueue();
+
+        customers.Remove(customer);
     }
 
     public Customer GetLastCusomer()
@@ -51,8 +51,11 @@ public class QueueManager : MonoBehaviour
             {
                 Transform front = customers[i - 1].transform;
 
-                targetPos = front.position - front.forward * spacing;
+                targetPos = counterPoint.position - counterPoint.forward * spacing * i;
+
+                //Debug.Log($"Customer {i} target: {front.gameObject.name}");
             }
+
 
             customers[i].SetTarget(targetPos);
         }

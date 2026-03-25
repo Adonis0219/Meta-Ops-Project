@@ -32,7 +32,7 @@ public class Inventory : MonoBehaviour
     Dictionary<PoolObejectType, ItemSlot> items = new Dictionary<PoolObejectType, ItemSlot>();
 
     // 임시 관리
-    int[] maxCount = { 5, 100, 100, 100 };
+    int[] maxCount = { 10, 100, 100, 100 };
 
     private void Awake()
     {

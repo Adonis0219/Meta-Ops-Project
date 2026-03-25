@@ -131,6 +131,8 @@ public class Customer : PoolObject
 
     public void SetTarget(Vector3 pos)
     {
+        isArrived = false;
+
         mover.SetTarget(pos);
     }
 
@@ -138,9 +140,9 @@ public class Customer : PoolObject
     {
         State = CustomerState.Leave;
 
-        queueMgr.RemoveCustomer(this);
-
         mover.SetTarget(leavePoint.position);
+
+        queueMgr.RemoveCustomer(this);
 
         StartCoroutine(LeaveRoutine());
     }
