@@ -15,18 +15,7 @@ public class Customer : PoolObject
     QueueManager queueMgr;
     SellZone sellZone;
 
-    CustomerState state;
-    public CustomerState State
-    {
-        get => state;
-
-        private set
-        {
-            state = value;
-
-            Debug.Log($"State ป๓ลย : {state}");
-        }
-    }
+    public CustomerState State { get; private set; }
 
     Transform leavePoint;
 

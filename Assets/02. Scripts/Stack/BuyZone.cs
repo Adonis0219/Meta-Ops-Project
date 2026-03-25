@@ -4,7 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BuyZone : MonoBehaviour
+public class BuyZone : BaseZone
 {
     public int cost = 20;
     public float payDelay = .1f;
@@ -37,9 +37,9 @@ public class BuyZone : MonoBehaviour
         UpdateCostUI();
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnEnterZone(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
+        if (payCoru != null) return;
 
         player = other.GetComponent<PlayerCollector>();
 
@@ -49,10 +49,8 @@ public class BuyZone : MonoBehaviour
         payCoru = StartCoroutine(PayRoutine(inven, stack));
     }
 
-    private void OnTriggerExit(Collider other)
+    protected override void OnExitZone(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-
         if (payCoru != null)
         {
             StopCoroutine(payCoru);

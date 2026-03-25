@@ -29,10 +29,8 @@ public class DropZone : BaseZone
         private set => dropZoneCount = value;
     }
 
-    protected override void OnTriggerEnter(Collider other)
+    protected override void OnEnterZone(Collider other)
     {
-        base.OnTriggerEnter(other);
-
         if (deliveryCoru != null) return;
 
         var playerStack = other.GetComponent<StackSystem>();
@@ -41,12 +39,7 @@ public class DropZone : BaseZone
 
         if (playerStack == null || playerInven == null || delivery == null) return;
 
-        deliveryCoru = StartCoroutine(DelRoutine(delivery, playerStack, playerInven));       
-    }
-
-    protected override void OnTriggerExit(Collider other)
-    {
-        base.OnTriggerExit(other);
+        deliveryCoru = StartCoroutine(DelRoutine(delivery, playerStack, playerInven));
     }
 
     IEnumerator DelRoutine(DeliveryHandler delivery, StackSystem stack, Inventory inven)

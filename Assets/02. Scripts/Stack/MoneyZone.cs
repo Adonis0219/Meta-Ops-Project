@@ -4,7 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MoneyZone : MonoBehaviour
+public class MoneyZone : BaseZone
 {
     public int price = 10;
     public float moneySpacing = .21f;
@@ -38,8 +38,6 @@ public class MoneyZone : MonoBehaviour
 
     void UpdateStackPosition()
     {
-        Debug.Log("위치 수정");
-
         for (int i = 0; i < moneyObjects.Count; i++)
         {
             Transform money = moneyObjects[i].transform;
