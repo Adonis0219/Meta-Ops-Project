@@ -13,6 +13,8 @@ public class DropZone : BaseZone
 
     public ProductZone productZone; // 가공 제품이 쌓이는 드롭존
 
+    public PoolObejectType dropZoneType;
+
     #endregion
 
     Coroutine deliveryCoru; // 아이템 제거 코루틴 참조
@@ -60,10 +62,13 @@ public class DropZone : BaseZone
         {
             if (dropPoints[i].childCount < 10)
             {
+                Item itemComp = _item.GetComponent<Item>(); 
+
                 _item.SetParent(dropPoints[i], false);
                 _item.localPosition = Vector3.zero;
-                _item.localRotation = Quaternion.identity;
-                _item.localScale = new Vector3(1, .5f, 1);
+                _item.localRotation = Quaternion
+                    .Euler(itemComp.obtainAngle.x, itemComp.obtainAngle.y, itemComp.obtainAngle.z);
+                _item.localScale = itemComp.obtainScale;
 
                 break; // 아이템이 드롭존에 쌓였으므로 루프 종료
             }
@@ -116,8 +121,8 @@ public class DropZone : BaseZone
         return null; // 모든 드롭 지점이 비어있을 때 기본값으로 null 반환
     }
 
-    public void RemoveOre()
+    public void RemoveItem()
     {
-        PopItem().SetActive(false); // 아이템 비활성화하여 제거 처리
+        PopItem().SetActive(false);
     }
 }

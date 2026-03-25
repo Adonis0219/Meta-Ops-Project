@@ -12,7 +12,7 @@ public class PoolObjectData
 // 생성할 풀 오브젝트의 타입 열거형
 public enum PoolObejectType
 {
-    Ore, Product, Money, Length
+    Ore, Product, Money, Customer, Length
 }
 
 public class PoolManager : MonoBehaviour

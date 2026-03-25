@@ -6,58 +6,46 @@ public class CustomerSpawner : MonoBehaviour
 {
     public GameObject prefab;
     public QueueManager queueManager;
+    public SellZone sellZone;
 
     public Transform spawnPoint;
+    public Transform leavePoint;
 
     public int maxCount = 4;
 
-    bool isSpawning = false;
+    Customer lastCustomer;
 
     private void Start()
     {
-        
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Spawn();
-        }
-    }
-
-    void TrySpawn()
-    {
-        if (isSpawning) return;
-
-        // 최대 인원 제한
-        if (queueManager.Count >= maxCount) return;
-
-        Customer last = queueManager.GetLastCusomer();
-
-        // 첫 생성
-        if (last == null)
-        {
-            Spawn();
-            return;
-        }
-
-        // 마지막 손님이 도착했을 때만 생성
-        if (last.IsArrived)
-        {
-            Spawn();
-        }
+        // 첫 스폰
+        Spawn();
     }
 
     void Spawn()
     {
-        isSpawning = true;
+        if (queueManager.Count >= maxCount) return;
 
-        GameObject obj = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        GameObject obj = PoolManager.instance.GetPool(PoolObejectType.Customer);
+        obj.transform.position = spawnPoint.position;
+
         Customer customer = obj.GetComponent<Customer>();
+        customer.Init(queueManager, sellZone, leavePoint);
 
-        customer.Init(queueManager);
-
-        isSpawning = false;
+        RegistLastCustomer(customer);
     }
+
+    void RegistLastCustomer(Customer customer)
+    {
+        // 이전 구독 해제
+        if (lastCustomer != null)
+            lastCustomer.OnArrived -= HandleArrived;
+
+        // 마지막 손님 등록
+        lastCustomer = customer;
+
+        // 구독
+        customer.OnArrived += HandleArrived;
+    }
+
+    void HandleArrived(Customer customer) => Spawn();
 }

@@ -41,6 +41,11 @@ public class Item : PoolObject
         parent = _parent;
     }
 
+    public void SetParent(Transform parent)
+    {
+        this.parent = parent;
+    }
+
     // 아이템이 다른 위치로 이동할 때 호출되는 메서드
     public void NotifyMoved()
     {

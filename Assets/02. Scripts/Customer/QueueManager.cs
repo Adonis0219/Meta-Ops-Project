@@ -14,12 +14,18 @@ public class QueueManager : MonoBehaviour
     public void AddCustomer(Customer customer)
     {
         customers.Add(customer);
+
+        customer.OnArrived += HandleCustomerArrived;
+
         UpdateQueue();
     }
 
     public void RemoveCustomer(Customer customer)
     {
+        customer.OnArrived -= HandleCustomerArrived;
+
         customers.Remove(customer);
+
         UpdateQueue();
     }
 
@@ -50,5 +56,13 @@ public class QueueManager : MonoBehaviour
 
             customers[i].SetTarget(targetPos);
         }
+    }
+
+    void HandleCustomerArrived(Customer customer)
+    {
+        // 맨 앞 손님인지 확인
+        if (customers.Count == 0) return;
+
+        if (customers[0] == customer && customer.State != CustomerState.Buying) customer.TryStartBuying();
     }
 }

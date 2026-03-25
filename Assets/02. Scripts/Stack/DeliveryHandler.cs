@@ -12,7 +12,7 @@ public class DeliveryHandler : MonoBehaviour
     {
         while (true)
         {
-            Transform item = _stack.PopItem(PoolObejectType.Ore);
+            Transform item = _stack.PopItem(_drop.dropZoneType);
 
             if (item == null)
                 yield break; // 스택이 비어있으면 납품 종료

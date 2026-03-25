@@ -59,7 +59,7 @@ public class ProductZone : BaseZone
             if (dropZone.DropZoneCount <= 0) yield break;
 
             // 원재료 소비
-            dropZone.RemoveOre();
+            dropZone.RemoveItem();
 
             // 제품 생성
             ProduceProduct();
@@ -69,6 +69,7 @@ public class ProductZone : BaseZone
     void ProduceProduct()
     {
         GameObject product = PoolManager.instance.GetPool(PoolObejectType.Product);
+        product.GetComponent<Item>().SetParent(product.transform.parent);
 
         // 제품 리스트에 추가
         products.Add(product);

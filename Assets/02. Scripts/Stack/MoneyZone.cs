@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class MoneyZone : MonoBehaviour
+{
+    int money;
+
+    public int Money
+    {
+        get => money;
+        private set
+        {
+            money = value;
+
+            moneyText.text = money.ToString();
+        }
+    }
+
+    public int price = 10;
+    public float moneySpacing = .21f;
+    public float basicSpacing = .2f;
+
+    public TextMeshProUGUI moneyText;
+    public Transform counterPoint;
+
+    List<MoneyObject> moneyObjects = new List<MoneyObject>();
+    MoneyObject moneyObject;
+
+    public void AddMoney()
+    {
+        Money += price;
+
+        // 돈 쌓이는 연출
+        // 돈 생성
+        GameObject temp = PoolManager.instance.GetPool(PoolObejectType.Money);
+
+        moneyObject = temp.GetComponent<MoneyObject>();
+        moneyObject.SetParent(temp.transform.parent);
+
+        // 돈 이동 (Customer위치(CountPoint) -> MoneyZone)
+        moneyObject.InitBehaviour(counterPoint.position, transform.position);
+        // 리스트에 돈 추가
+        moneyObjects.Add(moneyObject);
+
+        moneyObject.OnArrived += UpdateStackPosition;
+    }
+
+    void UpdateStackPosition()
+    {
+        Debug.Log("위치 수정");
+
+        for (int i = 0; i < moneyObjects.Count; i++)
+        {
+            Transform money = moneyObjects[i].transform;
+
+            money.localPosition = transform.position + new Vector3(0, basicSpacing + i * moneySpacing,0);
+        }
+
+        // 구독 해제
+        moneyObject.OnArrived -= UpdateStackPosition;
+    }
+}
