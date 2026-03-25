@@ -11,11 +11,16 @@ public class PlayerCollector : MonoBehaviour
     [SerializeField] private float collectCooldown = 0.5f; // 채광 쿨다운 시간
     private float lastCollectTime = -Mathf.Infinity; // 마지막 수집 시간
 
+    public GameObject drill;
+    public BoxCollider drillCol;
+    public CapsuleCollider playerCol;
+
     Coroutine proCoru, moneyCoru;
 
     private const string COLLECTABLE_TAG = "Collectable";
     private const string PRODUCTZONE_TAG = "ProductZone";
     private const string MONEYZONE_TAG = "MoneyZone";
+    private const string BUYZONE_TAG = "BuyZone";
 
     private void Awake()
     {
@@ -40,6 +45,15 @@ public class PlayerCollector : MonoBehaviour
         {
             moneyCoru = StartCoroutine(MoneyCollect(other));
         }
+    }
+    
+    public void ActiveDrill()
+    {
+        drill.SetActive(true);
+        drillCol.enabled = true;
+        playerCol.enabled = false;
+        collectCooldown = 0.05f;
+        playerInven.maxCount[0] = 100;
     }
 
     private void OreCollect(Collider other)
@@ -87,8 +101,6 @@ public class PlayerCollector : MonoBehaviour
 
             // 아이템 획득 효과
             ObtainEffect(money);
-
-            mZone.SetMoney(money.GetComponent<MoneyObject>().cost);
 
             yield return new WaitForSeconds(.1f);
         }

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6966814639382590837}
   m_Layer: 0
   m_Name: Ore
-  m_TagString: Ore
+  m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

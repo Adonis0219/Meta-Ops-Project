@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
@@ -30,9 +31,13 @@ public class ItemSlot
 public class Inventory : MonoBehaviour
 {
     Dictionary<PoolObejectType, ItemSlot> items = new Dictionary<PoolObejectType, ItemSlot>();
+    public TextMeshProUGUI moneyText;
+
+
+    public int Money => items[PoolObejectType.Money].Count * 10;
 
     // 임시 관리
-    int[] maxCount = { 10, 100, 100, 100 };
+    public int[] maxCount = { 10, 100, 100, 100 };
 
     private void Awake()
     {
@@ -45,10 +50,21 @@ public class Inventory : MonoBehaviour
             items[(PoolObejectType)i] = new ItemSlot(maxCount[i]);
     }
 
-    public void AddItem(PoolObejectType _type, int _amount) => GetOrCreateSlot(_type).Add(_amount);
+    public void AddItem(PoolObejectType _type, int _amount)
+    {
+        GetOrCreateSlot(_type).Add(_amount);
 
-    public void RemoveItem(PoolObejectType _type, int _amount) => GetOrCreateSlot(_type).Remove(_amount);
-    
+        if (_type == PoolObejectType.Money)
+            UpdateMoneyUI();
+    }
+
+    public void RemoveItem(PoolObejectType _type, int _amount)
+    {
+        GetOrCreateSlot(_type).Remove(_amount);
+
+        if (_type == PoolObejectType.Money)
+            UpdateMoneyUI();
+    }
 
     /// <summary>
     /// Dictionary를 private으로 설정하기 위한 Getter
@@ -75,5 +91,10 @@ public class Inventory : MonoBehaviour
             items[_type] = new ItemSlot((int)_type);
 
         return items[_type];
+    }
+
+    void UpdateMoneyUI()
+    {
+        moneyText.text = Money.ToString();
     }
 }

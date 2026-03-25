@@ -6,19 +6,6 @@ using UnityEngine;
 
 public class MoneyZone : MonoBehaviour
 {
-    int money;
-
-    public int Money
-    {
-        get => money;
-        private set
-        {
-            money = value;
-
-            moneyText.text = money.ToString();
-        }
-    }
-
     public int price = 10;
     public float moneySpacing = .21f;
     public float basicSpacing = .2f;
@@ -31,11 +18,6 @@ public class MoneyZone : MonoBehaviour
 
     public IReadOnlyList<MoneyObject> MoneyObjects => moneyObjects;
     public int moneyCount => moneyObjects.Count;
-
-    public void SetMoney(int cost)
-    {
-        Money += cost;
-    }
 
     public void AddMoney()
     {
