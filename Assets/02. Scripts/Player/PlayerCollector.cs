@@ -20,7 +20,6 @@ public class PlayerCollector : MonoBehaviour
     private const string COLLECTABLE_TAG = "Collectable";
     private const string PRODUCTZONE_TAG = "ProductZone";
     private const string MONEYZONE_TAG = "MoneyZone";
-    private const string BUYZONE_TAG = "BuyZone";
 
     private void Awake()
     {

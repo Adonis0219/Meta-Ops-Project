@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
@@ -32,24 +33,29 @@ public class DropZone : BaseZone
     {
         base.OnTriggerEnter(other);
 
+        if (deliveryCoru != null) return;
+
         var playerStack = other.GetComponent<StackSystem>();
         var playerInven = other.GetComponent<Inventory>();
         var delivery = GetComponent<DeliveryHandler>();
 
         if (playerStack == null || playerInven == null || delivery == null) return;
 
-        deliveryCoru = StartCoroutine(delivery.Deliver(playerStack, this, playerInven));       
+        deliveryCoru = StartCoroutine(DelRoutine(delivery, playerStack, playerInven));       
     }
 
     protected override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
+    }
 
-        if (deliveryCoru != null)
-        {
-            StopCoroutine(deliveryCoru);
-             deliveryCoru = null; // 참조 초기화
-        }
+    IEnumerator DelRoutine(DeliveryHandler delivery, StackSystem stack, Inventory inven)
+    {
+        // 기존 Deliver 실행
+        yield return delivery.Deliver(stack, this, inven);
+
+        // ⭐ 끝나면 코루틴 참조 해제
+        deliveryCoru = null;
     }
 
     public void SetDropZoneCount(int amount)
