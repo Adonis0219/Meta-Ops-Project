@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoneyZone : MonoBehaviour
@@ -28,10 +29,16 @@ public class MoneyZone : MonoBehaviour
     List<MoneyObject> moneyObjects = new List<MoneyObject>();
     MoneyObject moneyObject;
 
+    public IReadOnlyList<MoneyObject> MoneyObjects => moneyObjects;
+    public int moneyCount => moneyObjects.Count;
+
+    public void SetMoney(int cost)
+    {
+        Money += cost;
+    }
+
     public void AddMoney()
     {
-        Money += price;
-
         // µ· ½×ÀÌ´Â ¿¬Ãâ
         // µ· »ý¼º
         GameObject temp = PoolManager.instance.GetPool(PoolObejectType.Money);
@@ -60,5 +67,10 @@ public class MoneyZone : MonoBehaviour
 
         // ±¸µ¶ ÇØÁ¦
         moneyObject.OnArrived -= UpdateStackPosition;
+    }
+
+    public void Remove(MoneyObject item)
+    {
+        moneyObjects.Remove(item);
     }
 }

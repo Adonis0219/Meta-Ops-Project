@@ -28,32 +28,35 @@ public class SellZone : MonoBehaviour
         }
     }
 
+    // Customer 구매 시 호출
     public int TrySell(int RequestAmount)
     {
-        int dropCount = drop.DropZoneCount;
-
-        if (dropCount <= 0)
+        if (curStock <= 0)
             return 0;
 
-        int soldAmount = Mathf.Min(RequestAmount, dropCount);
+        int soldAmount = Mathf.Min(RequestAmount, curStock);
 
         drop.SetDropZoneCount(-soldAmount);
 
-        StartCoroutine(RemoveRoutine(soldAmount));
+        StartCoroutine(SellRoutine(soldAmount));
 
         return soldAmount;
     }
 
-    IEnumerator RemoveRoutine(int amount)
+    IEnumerator SellRoutine(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            // 아이템 제거
-            drop.RemoveItem();
+            GameObject go = drop.PopItem();
+
+            if (go == null) yield break;
 
             curStock--;
 
+            // 돈 생성
             moneyZone.AddMoney();
+
+            go.SetActive(false);
 
             yield return new WaitForSeconds(.3f);
         }

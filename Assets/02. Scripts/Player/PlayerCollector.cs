@@ -11,10 +11,11 @@ public class PlayerCollector : MonoBehaviour
     [SerializeField] private float collectCooldown = 0.5f; // 채광 쿨다운 시간
     private float lastCollectTime = -Mathf.Infinity; // 마지막 수집 시간
 
-    Coroutine proCoru;
+    Coroutine proCoru, moneyCoru;
 
-    private const string COLLECTIBLE_TAG = "Collectible";
+    private const string COLLECTABLE_TAG = "Collectable";
     private const string PRODUCTZONE_TAG = "ProductZone";
+    private const string MONEYZONE_TAG = "MoneyZone";
 
     private void Awake()
     {
@@ -27,13 +28,17 @@ public class PlayerCollector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(COLLECTIBLE_TAG))
+        if (other.CompareTag(COLLECTABLE_TAG))
         {
             OreCollect(other);
         }
         else if (other.CompareTag(PRODUCTZONE_TAG))
         {
             proCoru = StartCoroutine(ProductCollect(other));
+        }
+        else if (other.CompareTag(MONEYZONE_TAG))
+        {
+            moneyCoru = StartCoroutine(MoneyCollect(other));
         }
     }
 
@@ -65,7 +70,33 @@ public class PlayerCollector : MonoBehaviour
         ObtainEffect(item);
     }
 
-    public IEnumerator ProductCollect(Collider other)
+    IEnumerator MoneyCollect(Collider other)
+    {
+        MoneyZone mZone = other.GetComponent<MoneyZone>();
+
+        while (mZone.moneyCount > 0)
+        {
+            Item money = mZone.MoneyObjects[^1].GetComponent<Item>();
+
+            if (money == null || money.isObtained) yield break;
+
+            mZone.Remove(money.GetComponent<MoneyObject>());
+
+            // 아이템 획득 처리
+            MarkAsCollected(money);
+
+            // 아이템 획득 효과
+            ObtainEffect(money);
+
+            mZone.SetMoney(money.GetComponent<MoneyObject>().cost);
+
+            yield return new WaitForSeconds(.1f);
+        }
+
+        moneyCoru = null;
+    }
+
+    IEnumerator ProductCollect(Collider other)
     {
         ProductZone pZone = other.GetComponent<ProductZone>();
 
@@ -111,11 +142,21 @@ public class PlayerCollector : MonoBehaviour
         ItemEffect effect = item.GetComponent<ItemEffect>();
 
         // 이동 효과 시작
-        StartCoroutine(effect.PlayCollectEffect(stackSystem.roots[(int)item.poolType]));
+        //StartCoroutine(effect.PlayCollectEffect(stackSystem.roots[(int)item.poolType]));
+        StartCoroutine(CollectRoutine(item));
 
         // 인벤에 획득 알리기
         playerInven.AddItem(item.poolType, item.scoreValue);
         // 스택 시스템의 자기 자리에 추가
+        //stackSystem.AddToStack(item);
+    }
+
+    IEnumerator CollectRoutine(Item item)
+    {
+        ItemEffect effect = item.GetComponent<ItemEffect>();
+
+        yield return effect.PlayCollectEffect(stackSystem.roots[(int)item.poolType]);
+
         stackSystem.AddToStack(item);
     }
 }

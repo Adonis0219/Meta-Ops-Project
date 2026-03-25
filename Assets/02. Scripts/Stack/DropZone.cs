@@ -12,6 +12,7 @@ public class DropZone : BaseZone
     public float firstSpacing = .1f; // 드롭존과 첫 번째 아이템 간격
 
     public ProductZone productZone; // 가공 제품이 쌓이는 드롭존
+    public SellZone sellZone;
 
     public PoolObejectType dropZoneType;
 
@@ -75,6 +76,11 @@ public class DropZone : BaseZone
         }
 
         UpdateStackPositions();
+
+        if (gameObject.name == "SellZone Obj")
+        {
+            sellZone.AddStock(1);
+        }
     }
 
     void UpdateStackPositions()

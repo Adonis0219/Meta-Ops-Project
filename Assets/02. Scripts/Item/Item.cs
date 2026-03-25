@@ -29,6 +29,12 @@ public class Item : PoolObject
         // 아이템이 비활성화될 때 획득 상태 초기화
         isObtained = false;
 
+        if (poolType == PoolObejectType.Ore)
+        {
+            // 광석은 풀에 들어갈 때 원래 크기로
+            transform.localScale = Vector3.one;
+        }
+
         // 풀로 되돌리기
         ReturnPool();
     }

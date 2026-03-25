@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6966814639382590837}
   m_Layer: 0
   m_Name: Ore
-  m_TagString: Collectible
+  m_TagString: Ore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +125,7 @@ MonoBehaviour:
   scoreValue: 1
   isObtained: 0
   obtainScale: {x: 1, y: 0.5, z: 1}
+  obtainAngle: {x: 0, y: 0, z: 0}
 --- !u!114 &-8788685654482201909
 MonoBehaviour:
   m_ObjectHideFlags: 0

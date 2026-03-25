@@ -24,7 +24,7 @@ public class StackSystem : MonoBehaviour
 
     void Init()
     {
-        for (int i = 0; i < (int)PoolObejectType.Length; i++)
+        for (int i = 0; i < (int)PoolObejectType.Length - 1; i++)
             itemDict[(PoolObejectType)i] = new List<Transform>();
     }
 
@@ -69,6 +69,8 @@ public class StackSystem : MonoBehaviour
         {
             PoolObejectType type = item.Key;
             var list = item.Value;
+
+            Debug.Log($"{type} 타입 재배치 시작, listCount : {list.Count}");
 
             for (int j = 0; j < list.Count; j++)
             {

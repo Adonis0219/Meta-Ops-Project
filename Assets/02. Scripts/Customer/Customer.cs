@@ -58,7 +58,7 @@ public class Customer : PoolObject
         queueMgr = mgr;
         this.leavePoint = leavePoint;
         this.sellZone = sellZone;
-        targetBuyAmount = UnityEngine.Random.Range(1, 5);
+        targetBuyAmount = 4;
         curBoughtAmount = 0;
 
         // 초기 상태 지정

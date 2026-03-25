@@ -6,7 +6,8 @@ using UnityEngine;
 public class MoneyObject : Item
 {
     Vector3 target;
-    float speed = 10f;
+    float speed = 50f;
+    public int cost = 10;
 
     public event Action OnArrived;
 
