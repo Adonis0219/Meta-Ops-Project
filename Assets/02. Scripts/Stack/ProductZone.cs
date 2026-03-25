@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ProductZone : MonoBehaviour
+public class ProductZone : BaseZone
 {
     #region === Animation ===
 

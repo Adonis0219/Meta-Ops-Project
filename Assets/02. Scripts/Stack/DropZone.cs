@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public class DropZone : MonoBehaviour
+public class DropZone : BaseZone
 {
     #region === Inspector ===
 
@@ -25,9 +25,9 @@ public class DropZone : MonoBehaviour
         private set => dropZoneCount = value;
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
+        base.OnTriggerEnter(other);
 
         var playerStack = other.GetComponent<StackSystem>();
         var playerInven = other.GetComponent<Inventory>();
@@ -38,9 +38,9 @@ public class DropZone : MonoBehaviour
         deliveryCoru = StartCoroutine(delivery.Deliver(playerStack, this, playerInven));       
     }
 
-    private void OnTriggerExit(Collider other)
+    protected override void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
+        base.OnTriggerExit(other);
 
         if (deliveryCoru != null)
         {
