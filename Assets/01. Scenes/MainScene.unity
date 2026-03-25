@@ -1833,7 +1833,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 10, z: -5}
+  m_LocalPosition: {x: 0, y: 15, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1852,7 +1852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1856187032}
-  offset: {x: 0, y: 10, z: -5}
+  offset: {x: 0, y: 15, z: -10}
 --- !u!1 &1050767287
 GameObject:
   m_ObjectHideFlags: 0
@@ -2818,7 +2818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a0f0a35a6122a4469cc88865dd4e305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4337380587897155097, guid: 3f88bbf91904c6d448759ee4e85baf87, type: 3}
   queueManager: {fileID: 889787348}
   sellZone: {fileID: 674369117}
   spawnPoint: {fileID: 66084878}
@@ -2995,10 +2994,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b68ee782baccec243988932ff87492c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectCooldown: 0.5
   drill: {fileID: 1674355140}
   drillCol: {fileID: 1856187038}
   playerCol: {fileID: 1856187029}
+  collectCooldown: 0.5
 --- !u!114 &1856187036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3012,6 +3011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyText: {fileID: 1839515214}
+  maxCount: 0a000000640000006400000064000000
 --- !u!114 &1856187037
 MonoBehaviour:
   m_ObjectHideFlags: 0
