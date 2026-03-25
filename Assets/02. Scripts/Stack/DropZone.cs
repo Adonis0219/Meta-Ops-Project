@@ -8,10 +8,12 @@ public class DropZone : BaseZone
 {
     #region === Inspector ===
 
+    [Header("# Drop Points")]
     public List<Transform> dropPoints = new List<Transform>(); // 드롭 지점 리스트
     public float dropZoneSpacing = 0.3f; // 드롭 지점 간격
     public float firstSpacing = .1f; // 드롭존과 첫 번째 아이템 간격
 
+    [Header("# Reference")]
     public ProductZone productZone; // 가공 제품이 쌓이는 드롭존
     public SellZone sellZone;
 
@@ -28,6 +30,8 @@ public class DropZone : BaseZone
         get => dropZoneCount;
         private set => dropZoneCount = value;
     }
+
+    #region === Trigger ===
 
     protected override void OnEnterZone(Collider other)
     {
@@ -50,6 +54,10 @@ public class DropZone : BaseZone
         // ⭐ 끝나면 코루틴 참조 해제
         deliveryCoru = null;
     }
+
+    #endregion
+
+    #region === Stack Method ===
 
     public void SetDropZoneCount(int amount)
     {
@@ -76,10 +84,8 @@ public class DropZone : BaseZone
 
         UpdateStackPositions();
 
-        if (gameObject.name == "SellZone Obj")
-        {
+        if (sellZone != null)
             sellZone.AddStock(1);
-        }
     }
 
     void UpdateStackPositions()
@@ -130,4 +136,6 @@ public class DropZone : BaseZone
     {
         PopItem().SetActive(false);
     }
+
+    #endregion
 }

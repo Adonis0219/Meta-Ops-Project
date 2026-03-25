@@ -31,6 +31,7 @@ public class ItemSlot
 public class Inventory : MonoBehaviour
 {
     Dictionary<PoolObejectType, ItemSlot> items = new Dictionary<PoolObejectType, ItemSlot>();
+
     public TextMeshProUGUI moneyText;
 
 
@@ -49,6 +50,8 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < (int)PoolObejectType.Length; i++)
             items[(PoolObejectType)i] = new ItemSlot(maxCount[i]);
     }
+
+    #region === Item ===
 
     public void AddItem(PoolObejectType _type, int _amount)
     {
@@ -92,6 +95,8 @@ public class Inventory : MonoBehaviour
 
         return items[_type];
     }
+
+    #endregion
 
     void UpdateMoneyUI()
     {

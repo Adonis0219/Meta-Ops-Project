@@ -6,24 +6,28 @@ using UnityEngine;
 
 public enum CustomerState
 {
-    MovingToQueue, WaitingForStock, Buying, Leave
+    MovingToQueue,
+    WaitingForStock,
+    Buying,
+    Leave
 }
 
 public class Customer : PoolObject
 {
     CustomerMover mover;
+
     QueueManager queueMgr;
     SellZone sellZone;
+    Transform leavePoint;
 
     public CustomerState State { get; private set; }
 
-    Transform leavePoint;
-
-    bool isArrived;
     int targetBuyAmount;
     int curBoughtAmount;
 
+    bool isArrived;
     public bool IsArrived => isArrived;
+
     public Action<Customer> OnArrived;
 
     public float buyDelay = .2f;
@@ -42,6 +46,8 @@ public class Customer : PoolObject
         }
     }
 
+    #region === Init ===
+
     public void Init(QueueManager mgr, SellZone sellZone, Transform leavePoint)
     {
         queueMgr = mgr;
@@ -56,39 +62,34 @@ public class Customer : PoolObject
         queueMgr.AddCustomer(this);
     }
 
+    #endregion
+    #region === Buying ===
+
     public void TryStartBuying()
     {
         if (sellZone.curStock > 0)
-        {
             StartBuying();
-        }
         else
-        {
             WaitForStock();
-        }
     }
 
     public void StartBuying()
     {
-        // 반복 호출되므로 조건 필요
         if (State == CustomerState.Buying) return;
 
         State = CustomerState.Buying;
-
         StartCoroutine(BuyRoutine());
     }
 
     void WaitForStock()
     {
         State = CustomerState.WaitingForStock;
-
         sellZone.OnStockAvailable += HandleStockAvailable;
     }
 
     void HandleStockAvailable()
     {
         sellZone.OnStockAvailable -= HandleStockAvailable;
-
         StartBuying();
     }
 
@@ -97,20 +98,15 @@ public class Customer : PoolObject
         while (curBoughtAmount < targetBuyAmount)
         {
             int remain = targetBuyAmount - curBoughtAmount;
-
-            // 일부 구매 기능
             int sold = sellZone.TrySell(remain);
 
             if (sold > 0)
             {
                 curBoughtAmount += sold;
-
-
-                yield return new WaitForSeconds(.2f);
+                yield return new WaitForSeconds(buyDelay);
             }
             else
             {
-                // 재고 없음 -> 기다림
                 yield return new WaitForSeconds(.1f);
             }
         }
@@ -118,19 +114,25 @@ public class Customer : PoolObject
         Leave();
     }
 
+    #endregion
+
+    #region === Movement ===
+
     public void SetTarget(Vector3 pos)
     {
         isArrived = false;
-
         mover.SetTarget(pos);
     }
+
+    #endregion
+
+    #region === Leave ===
 
     public void Leave()
     {
         State = CustomerState.Leave;
 
         mover.SetTarget(leavePoint.position);
-
         queueMgr.RemoveCustomer(this);
 
         StartCoroutine(LeaveRoutine());
@@ -138,11 +140,11 @@ public class Customer : PoolObject
 
     IEnumerator LeaveRoutine()
     {
-        // 도착 안 했으면 기다리기
         while (!mover.IsArrived())
             yield return null;
 
-        // 도착하면 풀로 반환
         ReturnPool();
     }
+
+    #endregion
 }

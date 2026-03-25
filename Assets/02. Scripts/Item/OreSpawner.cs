@@ -47,6 +47,8 @@ public class OreSpawner : MonoBehaviour
 
     #endregion
 
+    #region === Spawn ===
+
     public void Spawn(int _x, int _y)
     {
         if (oreGrid[_x, _y] != null) return;
@@ -83,6 +85,8 @@ public class OreSpawner : MonoBehaviour
         yield return new WaitForSeconds(respawnDelay);
         Spawn(_x, _y);
     }
+
+    #endregion
 
     Vector3 GetWorldPos(int _x, int _y)
     {

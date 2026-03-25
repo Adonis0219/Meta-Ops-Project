@@ -45,7 +45,7 @@ public class StackSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Removes and returns the top item from the stack.
+    /// Removes and returns the top item from the stack
     /// </summary>
     /// <param name="type">꺼내올 오브젝트의 <see cref="PoolObejectType"/></param>
     /// <returns>가장 상단 오브젝트의 <see cref="Transform"/>, 또는 스택이 비어있다면 <see langword="null"/> 반환</returns>

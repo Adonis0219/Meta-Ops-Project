@@ -28,6 +28,8 @@ public class SellZone : MonoBehaviour
         }
     }
 
+    #region === Sell ===
+
     // Customer 구매 시 호출
     public int TrySell(int RequestAmount)
     {
@@ -60,6 +62,7 @@ public class SellZone : MonoBehaviour
 
             yield return new WaitForSeconds(.3f);
         }
-
     }
+
+    #endregion
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class BuyZone : BaseZone
 {
+    [Header("# Cost")]
     public int cost = 20;
     public float payDelay = .1f;
 
@@ -37,6 +38,8 @@ public class BuyZone : BaseZone
         UpdateCostUI();
     }
 
+    #region === Trigger ===
+
     protected override void OnEnterZone(Collider other)
     {
         if (payCoru != null) return;
@@ -58,12 +61,9 @@ public class BuyZone : BaseZone
         }
     }
 
-    void UpdateCostUI()
-    {
-        int remain = Mathf.Max(0, cost - paidCost);
+    #endregion
 
-        costText.text = $"{remain}";
-    }
+    #region === Payment ===
 
     IEnumerator PayRoutine(Inventory inven, StackSystem stack)
     {
@@ -96,13 +96,20 @@ public class BuyZone : BaseZone
         }
     }
 
+    void UpdateCostUI()
+    {
+        int remain = Mathf.Max(0, cost - paidCost);
+
+        costText.text = $"{remain}";
+    }
+
     void OnPurchaseComplete()
     {
-        Debug.Log("구매 완료");
-
         // 드릴 활성화
         player.ActiveDrill();
         // 발판 끄기
         gameObject.SetActive(false);
     }
+
+    #endregion
 }

@@ -15,10 +15,12 @@ public class Item : PoolObject
 
     #region === Inspector ===
 
+    [Header("# Item Info")]
     public int scoreValue = 1; // 아이템이 제공하는 점수 값
 
     public bool isObtained = false; // 아이템이 획득되었는지 여부
 
+    [Header("# Transform")]
     public Vector3 obtainScale;
     public Vector3 obtainAngle;
 
@@ -39,11 +41,12 @@ public class Item : PoolObject
         ReturnPool();
     }
 
+    #region === Init ===
+
     public void Init(int _x, int _y, Transform _parent)
     {
-        // this 생략 가능
-        this.x = _x;
-        this.y = _y;
+        x = _x;
+        y = _y;
         parent = _parent;
     }
 
@@ -52,16 +55,14 @@ public class Item : PoolObject
         this.parent = parent;
     }
 
-    // 아이템이 다른 위치로 이동할 때 호출되는 메서드
+    #endregion
+
+    #region === Grid ===
+
     public void NotifyMoved()
     {
-        // 기존 위치 알림
         OnMoved?.Invoke(x, y);
     }
 
-    public void UpdateGridPos(int newX, int newY)
-    {
-        x = newX;
-        y = newY;
-    }
+    #endregion
 }

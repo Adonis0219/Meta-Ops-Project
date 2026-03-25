@@ -8,12 +8,14 @@ public class CustomerMover : MonoBehaviour
 
     Vector3 target;
 
-    public void SetTarget(Vector3 targetPos) => target = targetPos;
-
     private void Update()
     {
         Move();
     }
+
+    #region === Move ===
+
+    public void SetTarget(Vector3 targetPos) => target = targetPos;
 
     void Move()
     {
@@ -32,5 +34,7 @@ public class CustomerMover : MonoBehaviour
     {
         return Vector3.Distance(transform.position, target) < 0.05f;
     }
+
+    #endregion
 }
 

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CustomerSpawner : MonoBehaviour
 {
-    public GameObject prefab;
+    #region === Inspector ===
+
     public QueueManager queueManager;
     public SellZone sellZone;
 
@@ -13,6 +14,8 @@ public class CustomerSpawner : MonoBehaviour
 
     public int maxCount = 4;
 
+    #endregion
+
     Customer lastCustomer;
 
     private void Start()
@@ -20,6 +23,8 @@ public class CustomerSpawner : MonoBehaviour
         // 첫 스폰
         Spawn();
     }
+
+    #region === Spawn ===
 
     void Spawn()
     {
@@ -31,21 +36,22 @@ public class CustomerSpawner : MonoBehaviour
         Customer customer = obj.GetComponent<Customer>();
         customer.Init(queueManager, sellZone, leavePoint);
 
-        RegistLastCustomer(customer);
+        RegisterLastCustomer(customer);
     }
 
-    void RegistLastCustomer(Customer customer)
+    void RegisterLastCustomer(Customer customer)
     {
-        // 이전 구독 해제
         if (lastCustomer != null)
             lastCustomer.OnArrived -= HandleArrived;
 
-        // 마지막 손님 등록
         lastCustomer = customer;
-
-        // 구독
         customer.OnArrived += HandleArrived;
     }
 
-    void HandleArrived(Customer customer) => Spawn();
+    void HandleArrived(Customer customer)
+    {
+        Spawn();
+    }
+
+    #endregion
 }

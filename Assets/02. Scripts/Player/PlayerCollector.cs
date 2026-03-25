@@ -8,12 +8,15 @@ public class PlayerCollector : MonoBehaviour
     Inventory playerInven;
     StackSystem stackSystem;
 
-    [SerializeField] private float collectCooldown = 0.5f; // Ã¤±¤ Äð´Ù¿î ½Ã°£
     private float lastCollectTime = -Mathf.Infinity; // ¸¶Áö¸· ¼öÁý ½Ã°£
 
+    [Header("# Drill")]
     public GameObject drill;
     public BoxCollider drillCol;
     public CapsuleCollider playerCol;
+
+    [Header("# Collect")]
+    [SerializeField] private float collectCooldown = 0.5f; // Ã¤±¤ Äð´Ù¿î ½Ã°£
 
     Coroutine proCoru, moneyCoru;
 
@@ -54,6 +57,8 @@ public class PlayerCollector : MonoBehaviour
         collectCooldown = 0.05f;
         playerInven.maxCount[0] = 100;
     }
+
+    #region === Collect Method ===
 
     private void OreCollect(Collider other)
     {
@@ -133,6 +138,10 @@ public class PlayerCollector : MonoBehaviour
         proCoru = null;
     }
 
+#endregion
+
+    #region === Collect Core ===
+
     /// <summary>
     /// ¾ÆÀÌÅÛ È¹µæ Ã³¸®
     /// </summary>
@@ -170,4 +179,6 @@ public class PlayerCollector : MonoBehaviour
 
         stackSystem.AddToStack(item);
     }
+
+    #endregion
 }
